@@ -1,4 +1,4 @@
-# NumericalInput
+# Numerical Input
 A Maya script for manual numeric input of translation tools
 
 # How to Use
