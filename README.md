@@ -16,7 +16,11 @@ ie \Users\<username>\Documents\Maya\scripts\NumericalInput
 Importing the shortcut file will **override** your existing custom hotkey binds! 
 If you don't want this to happen you can create your own custom script keybind 
 - Create a new Runtime Command Editor
-- Language: Python
+- Name: _MoveNumerical_
+- Category: _Custonm Scripts_
+- Sub-Category: _Transform_
+- Language: _Python_
+
 Paste the following code
 ```  
 from importlib import reload
@@ -24,6 +28,9 @@ from NumericalInput import NumericalInput
 reload(NumericalInput)
 NumericalInput.NumericalInput.openPrompt()
 ```
+![Create_Hotkey](https://github.com/Shinobubu/NumericalInput/assets/14949931/9ad6f3c8-c37b-44c5-ad5f-15e55b70d8b0)
+![Create_Hotkey_2](https://github.com/Shinobubu/NumericalInput/assets/14949931/cf5a59ae-a3ab-43bb-9e3b-e541bec539f1)
+
 If you are not concerned with overwritting your existing hotkeys proceed to the steps below
 
 # Importing Hotkeys
