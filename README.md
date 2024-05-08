@@ -1,6 +1,14 @@
 # NumericalInput
 A Maya script for manual numeric input of translation tools
 
+# How to Use
+With the Move/Scale/Rotate tool select the handle you want to manipulate and press the hotkey (Shift+Alt+Q) and type in the value you want to apply to it
+
+Features:
+- Supports Custom Pivots
+- Pivot Pinning
+- Multiple Axis input support ( Simultaneously change X Y and Z by typing in all 3 numbers seperated by space)
+
 # Installation
 Copy the directory to your scripts folder make sure to remove  "-main" from the directory name
 ie \Users\<username>\Documents\Maya\scripts\NumericalInput
