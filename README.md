@@ -5,6 +5,18 @@ A Maya script for manual numeric input of translation tools
 Copy the directory to your scripts folder make sure to remove  "-main" from the directory name
 ie \Users\<username>\Documents\Maya\scripts\NumericalInput
 
+Importing the shortcut file will override your existing custom hotkey binds! 
+If you don't want this to happen you can create your own custom script keybind instead 
+  Create a new Runtime Command Editor
+  Language: Python
+  Paste the following code
+''  
+from importlib import reload
+from NumericalInput import NumericalInput
+reload(NumericalInput)
+NumericalInput.NumericalInput.openPrompt()
+''
+
 ![Step_0](https://github.com/Shinobubu/NumericalInput/assets/14949931/32a17b57-688e-4510-b998-a28ad37b25ff)
 
 ![Step_1](https://github.com/Shinobubu/NumericalInput/assets/14949931/76a3fd64-d7b6-4224-90d7-ea09997b6586)
