@@ -202,7 +202,7 @@ class NumericalInput():
 					cmds.scale( direction.x,direction.y,direction.z,  p=pivot , oa=orientation)
 		else:
 			print("Only works if Move, Rotate or Scale tool is active")
-		cmds.deleteUI("InputPrompt")
+		cmds.evalDeferred(lambda: cmds.deleteUI("InputPrompt"))
 
 	@staticmethod
 	def openPrompt(axis="x"):
