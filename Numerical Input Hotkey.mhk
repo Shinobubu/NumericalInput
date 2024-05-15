@@ -20,38 +20,36 @@ runTimeCommand
 	-command ("from importlib import reload\nfrom NumericalInput import NumericalInput\nreload(NumericalInput)\nNumericalInput.NumericalInput.openPrompt()")
 	MoveNumerical;
 
+runTimeCommand
+	-label ""
+	-annotation "Numerically Extrude facets"
+	-longAnnotation ""
+	-category "Custom Scripts.Transform"
+	-image ""
+	-tags ""
+	-keywords ""
+	-plugin ""
+	-helpUrl ""
+	-hotkeyCtx ""
+	-commandLanguage "python"
+	-command ("from importlib import reload\nfrom NumericalInput import NumericalInput\nreload(NumericalInput)\nNumericalInput.NumericalInput.openExtrudePrompt()")
+	ExtrudeNumerical;
+
 //
 // The name commands referenced by the hotkeys
 //
-nameCommand
-	-annotation "ThunderCloud_GMH2_Hotkey"
-	-sourceType "mel"
-	-command ("source \"ThunderCloud/GMH2_6/GMH2_starter.mel\";")
-	ThunderCloud_GMH_command;
-
-nameCommand
-	-annotation "CopyVertexWeightsNameCommand"
-	-sourceType "mel"
-	-command ("CopyVertexWeights")
-	CopyVertexWeightsNameCommand;
-
-nameCommand
-	-annotation "PasteVertexWeightsNameCommand"
-	-sourceType "mel"
-	-command ("PasteVertexWeights")
-	PasteVertexWeightsNameCommand;
-
-nameCommand
-	-annotation "UndoNameCommand"
-	-sourceType "mel"
-	-command ("Undo")
-	UndoNameCommand;
 
 nameCommand
 	-annotation "MoveNumericalNameCommand"
 	-sourceType "mel"
 	-command ("MoveNumerical")
 	MoveNumericalNameCommand;
+
+nameCommand
+	-annotation "ExtrudeNumericalNameCommand"
+	-sourceType "mel"
+	-command ("ExtrudeNumerical")
+	ExtrudeNumericalNameCommand;
 
 //
 // The user hotkeys
@@ -63,31 +61,5 @@ hotkeySet -source "Maya_Default" -current Maya_Default_Duplicate;
 //
 // The hotkey contexts and hotkeys
 //
-hotkey -keyShortcut "z" -ctl -alt -sht -name ("");
-hotkey -keyShortcut "z" -pressCommandRepeat true
-	-name ("UndoNameCommand");
-hotkey -keyShortcut "q" -ctl -alt -name ("");
 hotkey -keyShortcut "q" -alt -sht -name ("MoveNumericalNameCommand");
-hotkey -keyShortcut "z" -ctl -sht -name ("");
-hotkey -keyShortcut "@" -alt -name ("PasteVertexWeightsNameCommand");
-hotkey -keyShortcut "!" -ctl -name ("ThunderCloud_GMH_command");
-hotkey -keyShortcut "!" -alt -name ("CopyVertexWeightsNameCommand");
-hotkey -keyShortcut "x" -ctl -alt -sht -name ("");
-hotkeyCtx -type "Editor" -addClient "nodeEditorPanel";
-hotkeyCtx -type "Editor" -addClient "polyTexturePlacementPanel";
-hotkeyCtx -type "Editor" -addClient "posePanel";
-hotkeyCtx -type "Editor" -addClient "profilerPanel";
-hotkeyCtx -type "Editor" -addClient "timeEditorPanel";
-hotkeyCtx -type "Editor" -addClient "hyperShadePanel";
-hotkeyCtx -type "Editor" -addClient "shapePanel";
-hotkeyCtx -type "Editor" -addClient "hyperGraphPanel";
-hotkeyCtx -type "Editor" -addClient "outlinerPanel";
-hotkeyCtx -type "Editor" -addClient "graphEditor";
-hotkeyCtx -type "Tool" -addClient "texCutContext";
-hotkeyCtx -type "Tool" -addClient "polyCutUV";
-hotkeyCtx -type "Tool" -addClient "Unfold3DBrush";
-hotkeyCtx -type "Tool" -addClient "bpDraw";
-hotkeyCtx -type "Tool" -addClient "texSculptCacheContext";
-hotkeyCtx -type "Tool" -addClient "xgmIGBrush";
-hotkeyCtx -type "Tool" -addClient "SymmetrizeUVBrush";
-hotkeyCtx -type "Tool" -addClient "sculptMeshCache";
+hotkey -keyShortcut "w" -alt -sht -name ("ExtrudeNumericalNameCommand");
