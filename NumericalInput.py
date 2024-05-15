@@ -11,11 +11,21 @@ NumericalInput.openPrompt()
 #include <QtCore/QCoreApplication>
 from maya import cmds
 import maya.api.OpenMaya as oMaya
+import maya.api.OpenMayaUI as omui2
+try:
+  #from PySide6.QtCore import QtWidgets, QtCore
+  from PySide6 import QtGui, QtCore
+except ImportError:
+  #from PySide2.QtCore import QtWidgets, QtCore
+  from PySide2 import QtGui, QtCore
 import math
 
 
 
 class NumericalInput():	
+	
+	x_offset = 10 # window offset from mouse cursor
+	y_offset = -20 
 
 	@staticmethod
 	def isValidContext():
@@ -444,18 +454,28 @@ class NumericalInput():
 		if(cmds.window("InputPrompt",q=1,ex=1)):
 			cmds.evalDeferred(lambda: cmds.deleteUI("InputPrompt"))
 
+
+	
+
 	@staticmethod
 	def openPrompt(axis="x"):
 		#if NumericalInput.isValidContext():
+		
 		ctx = cmds.currentCtx()
 		contextname = cmds.contextInfo(ctx, c=True)
 		NumericalInput.contextname = contextname
+		NumericalInput.axis = axis # not yet implimented. per axis hotkeys
 
-		
-		NumericalInput.axis = axis
+		if(cmds.windowPref("InputPrompt",ex=True)):
+			cmds.windowPref("InputPrompt",r=True)
+							
+		ms = QtGui.QCursor().pos()
+		print(ms.x(),ms.y())
 		if(cmds.window("InputPrompt",q=1,ex=1)):cmds.deleteUI("InputPrompt")
-		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1)
+
+		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1,topLeftCorner=[ms.y()+NumericalInput.y_offset,ms.x()+NumericalInput.x_offset])
 		cmds.columnLayout('column')
+		
 		cmds.textField("numfield",  ec=NumericalInput.enteredvalue ,alwaysInvokeEnterCommandOnReturn=True, w=120,bgc=[0.0, 0.0, 0.0] )
 		cmds.showWindow("InputPrompt")		
 		cmds.setFocus("numfield")
@@ -468,8 +488,15 @@ class NumericalInput():
 		contextname = cmds.contextInfo(ctx, c=True)
 		NumericalInput.contextname = contextname		
 		NumericalInput.axis = axis
+		
+		if(cmds.windowPref("InputPrompt",ex=True)):
+			cmds.windowPref("InputPrompt",r=True)
+							
+		ms = QtGui.QCursor().pos()
+		print(ms.x(),ms.y())
 		if(cmds.window("InputPrompt",q=1,ex=1)):cmds.deleteUI("InputPrompt")
-		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1)
+		
+		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1,topLeftCorner=[ms.y()+NumericalInput.y_offset,ms.x()+NumericalInput.x_offset])
 		cmds.columnLayout('column')
 		cmds.textField("numfield",  ec=NumericalInput.extrudeByValue ,alwaysInvokeEnterCommandOnReturn=True, w=120,bgc=[1.0, 0.0, 0.0] )
 		cmds.showWindow("InputPrompt")		
