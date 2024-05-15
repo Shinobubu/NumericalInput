@@ -109,11 +109,12 @@ class NumericalInput():
 			values = args[0]	
 			# remove white spaces
 			values = values.strip()
-			values = values.split(" ")		
-
+				
 			if values == "":
 				if(cmds.window("InputPrompt",q=1,ex=1)):
 					cmds.evalDeferred(lambda: cmds.deleteUI("InputPrompt"))
+				return
+			values = values.split(" ")	
 
 			x,y,z = (0 , 0 , 0)
 			v = values[0] # for single only entries
@@ -293,13 +294,12 @@ class NumericalInput():
 		if NumericalInput.isValidContext():
 			values = args[0]	
 			# remove white spaces
-			values = values.strip()
-			values = values.split(" ")	
-			
+			values = values.strip()						
 			if values == "":
 				if(cmds.window("InputPrompt",q=1,ex=1)):
 					cmds.evalDeferred(lambda: cmds.deleteUI("InputPrompt"))
-
+				return
+			values = values.split(" ")	
 			x,y,z = (0 , 0 , 0)
 			v = values[0] # for single only entries
 			if len(values) > 1:		
