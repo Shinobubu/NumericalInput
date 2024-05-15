@@ -42,8 +42,7 @@ class NumericalInput():
 		lspace = False
 		cspace = False	
 		rspace = False	
-		compspace = False	
-		print (kspace)	
+		compspace = False			
 		if kspace == 0:
 			ospace = True
 		if kspace == 1:
@@ -214,6 +213,7 @@ class NumericalInput():
 						cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , oa=orientation ,cs=compspace)										
 				else:
 					print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
+				cmds.manipPivot( p=pivot)	
 
 			if NumericalInput.contextname == "manipScale":
 				axisindex = cmds.manipScaleContext( "Scale", q=True, currentActiveHandle=True)					
