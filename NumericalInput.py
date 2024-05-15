@@ -28,10 +28,9 @@ class NumericalInput():
 	y_offset = -20 
 
 	@staticmethod
-	def isValidContext():
-		
+	def isValidContext():		
 		ctx = cmds.currentCtx()
-		contx = cmds.contextInfo(ctx, c=True)
+		contx = cmds.contextInfo(ctx, c=True)		
 		if contx == "manipMove" or contx  == "manipRotate" or contx == "manipScale":
 			return True
 		return False
@@ -139,11 +138,12 @@ class NumericalInput():
 			euler = oMaya.MEulerRotation(math.radians(orientation[0]) ,math.radians(orientation[1]),math.radians(orientation[2]))	
 
 			if NumericalInput.contextname == "manipMove":
+				pivotmode = cmds.manipMoveContext( "Move", q=True, editPivotMode=True)
 				axisindex = cmds.manipMoveContext( "Move", q=True, currentActiveHandle=True)	
 				pinPivot = cmds.manipMoveContext( "Move", q=True, pin=True)
 				wspace, ospace, lspace, cspace, rspace, compspace = NumericalInput.coordinateSpace(cmds.manipMoveContext( "Move", q=True, mode=True))								
 				pivot = cmds.manipMoveContext( "Move", q=True, position=True)					
-				if len(pivot) == 0:
+				if pivotmode == True:
 					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
 					return
 				internalunit = cmds.currentUnit(q=True,fullName=True)				
@@ -187,10 +187,11 @@ class NumericalInput():
 				else:
 					print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
 			if NumericalInput.contextname == "manipRotate":
+				pivotmode = cmds.manipRotateContext( "Rotate", q=True, editPivotMode=True)
 				axisindex = cmds.manipRotateContext( "Rotate", q=True, currentActiveHandle=True)									
 				wspace, ospace, lspace, cspace , rspace, compspace = NumericalInput.coordinateSpace(cmds.manipRotateContext( "Rotate", q=True, mode=True))
 				pivot = cmds.manipRotateContext( "Rotate", q=True, position=True)		
-				if len(pivot) == 0:
+				if pivotmode == True:
 					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
 					return
 				# get pivot manipulator
@@ -233,10 +234,11 @@ class NumericalInput():
 				cmds.manipRotateContext( "Rotate", e=True, currentActiveHandle=axisindex)		
 
 			if NumericalInput.contextname == "manipScale":
+				pivotmode = cmds.manipScaleContext( "Scale", q=True, editPivotMode=True)
 				axisindex = cmds.manipScaleContext( "Scale", q=True, currentActiveHandle=True)					
 				# get pivot manipulator
 				pivot = cmds.manipScaleContext( "Scale", q=True, position=True)				
-				if len(pivot) == 0:
+				if pivotmode == True:
 					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
 					return
 				
@@ -324,126 +326,133 @@ class NumericalInput():
 			
 			
 			if NumericalInput.contextname == "manipMove":
-				axisindex = cmds.manipMoveContext( "Move", q=True, currentActiveHandle=True)	
-				pinPivot = cmds.manipMoveContext( "Move", q=True, pin=True)
-				wspace, ospace, lspace, cspace, rspace, compspace = NumericalInput.coordinateSpace(cmds.manipMoveContext( "Move", q=True, mode=True))								
-				pivot = cmds.manipMoveContext( "Move", q=True, position=True)					
-				if len(pivot) == 0:
-					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
-					return
-				internalunit = cmds.currentUnit(q=True,fullName=True)				
-				x = float(cmds.convertUnit(x,toUnit=internalunit))
-				y = float(cmds.convertUnit(y,toUnit=internalunit))
-				z = float(cmds.convertUnit(z,toUnit=internalunit))		
-				v = float(cmds.convertUnit(v,toUnit=internalunit))		
-				direction = oMaya.MVector( x,y,z )
-				
-				if len(values) == 1:
-					# when there is only single value 
-					direction = oMaya.MVector()
-					if axisindex == 0: # X					
-						direction.x = v										
-					if axisindex == 1: # Y
-						direction.y = v					
-					if axisindex == 2: # Z
-						direction.z = v				
-				rotdirection = direction.rotateBy(euler)												
-				if wspace == True or ospace == True or cspace == True or lspace == True or compspace == True: 
-					
-					cmds.move( rotdirection.x , rotdirection.y , rotdirection.z, r=True , ws=wspace, os=ospace, cs=compspace )					
-					
-					if pinPivot == False:		
-						pVector = oMaya.MVector(  float(pivot[0]),float(pivot[1]),float(pivot[2]))						
-						if euler.x + euler.y + euler.z == 0:					
-							# no change in pivot rotation don't try 
-							pass							
-						else:									
-							newPin = pVector + rotdirection
-							cmds.manipPivot( p=newPin)						
+				pivotmode = cmds.manipMoveContext( "Move", q=True, editPivotMode=True)				
+				if pivotmode == True:					
+					if len(values) < 2:
+						print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")	
+						return									
 				else:
-					print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
+					internalunit = cmds.currentUnit(q=True,fullName=True)				
+					x = float(cmds.convertUnit(x,toUnit=internalunit))
+					y = float(cmds.convertUnit(y,toUnit=internalunit))
+					z = float(cmds.convertUnit(z,toUnit=internalunit))		
+					v = float(cmds.convertUnit(v,toUnit=internalunit))		
+					direction = oMaya.MVector( x,y,z )
+					axisindex = cmds.manipMoveContext( "Move", q=True, currentActiveHandle=True)	
+					pinPivot = cmds.manipMoveContext( "Move", q=True, pin=True)
+					wspace, ospace, lspace, cspace, rspace, compspace = NumericalInput.coordinateSpace(cmds.manipMoveContext( "Move", q=True, mode=True))								
+					pivot = cmds.manipMoveContext( "Move", q=True, position=True)					
+					
+					
+					if wspace == True or ospace == True or cspace == True or lspace == True or compspace == True: 
+						if len(values) == 1:
+							# when there is only single value 
+							direction = oMaya.MVector()
+							if axisindex == 0: # X					
+								direction.x = v										
+							if axisindex == 1: # Y
+								direction.y = v					
+							if axisindex == 2: # Z
+								direction.z = v				
+						rotdirection = direction.rotateBy(euler)
+						cmds.move( rotdirection.x , rotdirection.y , rotdirection.z, r=True , ws=wspace, os=ospace, cs=compspace )					
+						
+						if pinPivot == False:		
+							pVector = oMaya.MVector(  float(pivot[0]),float(pivot[1]),float(pivot[2]))						
+							if euler.x + euler.y + euler.z == 0:					
+								# no change in pivot rotation don't try 
+								pass							
+							else:									
+								newPin = pVector + rotdirection
+								cmds.manipPivot( p=newPin)						
+					else:
+						print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
 				
 			if NumericalInput.contextname == "manipRotate":
-				axisindex = cmds.manipRotateContext( "Rotate", q=True, currentActiveHandle=True)									
-				wspace, ospace, lspace, cspace , rspace, compspace = NumericalInput.coordinateSpace(cmds.manipRotateContext( "Rotate", q=True, mode=True))
-				pivot = cmds.manipRotateContext( "Rotate", q=True, position=True)		
-				if len(pivot) == 0:
+				pivotmode = cmds.manipRotateContext( "Rotate", q=True, editPivotMode=True)													
+				if pivotmode == True:
 					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
 					return
-				# get pivot manipulator
-				
-				x = float(x)
-				y = float(y)
-				z = float(z)	
-				v = float(v)
-				direction = oMaya.MVector( x,y,z )						
-				orientation = [str(euler.x)+"rad",str(euler.y)+"rad",str(euler.z)+"rad"]							
-
-				if len(values) == 1:					
-					direction = oMaya.MVector()
-					if axisindex == 0: # X					
-						direction.x = v										
-					if axisindex == 1: # Y
-						direction.y = v					
-					if axisindex == 2: # Z
-						direction.z = v
-
-				if wspace == True or ospace == True or rspace == True or lspace == True or compspace == True: 
-					
-					if euler.x == euler.y == euler.z == 0:	
-						# fixes a bug where no if the pivot isn't customized it would twist 
-						cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , cs=compspace )					
-					else:
-						cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , oa=orientation ,cs=compspace)										
 				else:
-					print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
+					# get pivot manipulator
+					wspace, ospace, lspace, cspace , rspace, compspace = NumericalInput.coordinateSpace(cmds.manipRotateContext( "Rotate", q=True, mode=True))
+					axisindex = cmds.manipRotateContext( "Rotate", q=True, currentActiveHandle=True)									
+					pivot = cmds.manipRotateContext( "Rotate", q=True, position=True)	
+					x = float(x)
+					y = float(y)
+					z = float(z)	
+					v = float(v)
+					direction = oMaya.MVector( x,y,z )						
+					orientation = [str(euler.x)+"rad",str(euler.y)+"rad",str(euler.z)+"rad"]							
+
+					if len(values) == 1:					
+						direction = oMaya.MVector()
+						if axisindex == 0: # X					
+							direction.x = v										
+						if axisindex == 1: # Y
+							direction.y = v					
+						if axisindex == 2: # Z
+							direction.z = v
+
+					if wspace == True or ospace == True or rspace == True or lspace == True or compspace == True: 
+						
+						if euler.x == euler.y == euler.z == 0:	
+							# fixes a bug where no if the pivot isn't customized it would twist 
+							cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , cs=compspace )					
+						else:
+							cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , oa=orientation ,cs=compspace)										
+					else:
+						print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
 
 			if NumericalInput.contextname == "manipScale":
-				axisindex = cmds.manipScaleContext( "Scale", q=True, currentActiveHandle=True)					
-				# get pivot manipulator
-				pivot = cmds.manipScaleContext( "Scale", q=True, position=True)				
-				if len(pivot) == 0:
+				pivotmode = cmds.manipScaleContext( "Scale", q=True, editPivotMode=True)
+				if pivotmode == True:
 					print("This tool doesn't work with the pivot gizmo press INSERT to exit Pivot Edit")
 					return
-				wspace, ospace, lspace, cspace , rspace, compspace = NumericalInput.coordinateSpace(cmds.manipScaleContext( "Scale", q=True, mode=True))
-				orientation = [str(euler.x)+"rad",str(euler.y)+"rad",str(euler.z)+"rad"]
-				x,y,z = (1 , 1 , 1) # default to 1 ( no scale)
-				if len(values) > 1:		
-					x = values[0]					
-					y = values[1]
-					if len(values) > 2:
-						z = values[2]
-				x = float(x)
-				y = float(y)
-				z = float(z)
-				v = float(v)
-				direction = oMaya.MVector(x,y,z)	
-				if len(values) > 1:					
-					cmds.scale( x,y,z,  p=pivot , oa=orientation)
-				else:	
-					direction = oMaya.MVector(1,1,1)								
-					if axisindex == 0: # X
-						direction.x = v
-					if axisindex == 1: # Y
-						direction.y = v						
-					if axisindex == 2: # Z
-						direction.z = v
-					if axisindex == 3 : #ALL
-						direction = oMaya.MVector(v,v,v)
-					if axisindex == 4: #X&Y
-						direction.x = v
-						direction.y = v					
-					if axisindex == 5: #Y&Z
-						direction.y = v
-						direction.z = v						
-					if axisindex == 6: #X&Z
-						direction.x = v 
-						direction.z = v						
-
-				if euler.x == euler.y == euler.z == 0:
-					cmds.scale( direction.x,direction.y,direction.z,  p=pivot , cs=compspace , ws=wspace, os=ospace)
 				else:
-					cmds.scale( direction.x,direction.y,direction.z,  p=pivot , oa=orientation, cs=compspace , ws=wspace, os=ospace)
+					axisindex = cmds.manipScaleContext( "Scale", q=True, currentActiveHandle=True)					
+					# get pivot manipulator
+					pivot = cmds.manipScaleContext( "Scale", q=True, position=True)				
+					
+					wspace, ospace, lspace, cspace , rspace, compspace = NumericalInput.coordinateSpace(cmds.manipScaleContext( "Scale", q=True, mode=True))
+					orientation = [str(euler.x)+"rad",str(euler.y)+"rad",str(euler.z)+"rad"]
+					x,y,z = (1 , 1 , 1) # default to 1 ( no scale)
+					if len(values) > 1:		
+						x = values[0]					
+						y = values[1]
+						if len(values) > 2:
+							z = values[2]
+					x = float(x)
+					y = float(y)
+					z = float(z)
+					v = float(v)
+					direction = oMaya.MVector(x,y,z)	
+					if len(values) > 1:					
+						cmds.scale( x,y,z,  p=pivot , oa=orientation)
+					else:	
+						direction = oMaya.MVector(1,1,1)								
+						if axisindex == 0: # X
+							direction.x = v
+						if axisindex == 1: # Y
+							direction.y = v						
+						if axisindex == 2: # Z
+							direction.z = v
+						if axisindex == 3 : #ALL
+							direction = oMaya.MVector(v,v,v)
+						if axisindex == 4: #X&Y
+							direction.x = v
+							direction.y = v					
+						if axisindex == 5: #Y&Z
+							direction.y = v
+							direction.z = v						
+						if axisindex == 6: #X&Z
+							direction.x = v 
+							direction.z = v						
+
+					if euler.x == euler.y == euler.z == 0:
+						cmds.scale( direction.x,direction.y,direction.z,  p=pivot , cs=compspace , ws=wspace, os=ospace)
+					else:
+						cmds.scale( direction.x,direction.y,direction.z,  p=pivot , oa=orientation, cs=compspace , ws=wspace, os=ospace)
 		else:
 			print("Only works if Move, Rotate or Scale tool is active")	
 		
@@ -469,8 +478,7 @@ class NumericalInput():
 		if(cmds.windowPref("InputPrompt",ex=True)):
 			cmds.windowPref("InputPrompt",r=True)
 							
-		ms = QtGui.QCursor().pos()
-		print(ms.x(),ms.y())
+		ms = QtGui.QCursor().pos()		
 		if(cmds.window("InputPrompt",q=1,ex=1)):cmds.deleteUI("InputPrompt")
 
 		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1,topLeftCorner=[ms.y()+NumericalInput.y_offset,ms.x()+NumericalInput.x_offset])
@@ -492,8 +500,7 @@ class NumericalInput():
 		if(cmds.windowPref("InputPrompt",ex=True)):
 			cmds.windowPref("InputPrompt",r=True)
 							
-		ms = QtGui.QCursor().pos()
-		print(ms.x(),ms.y())
+		ms = QtGui.QCursor().pos()		
 		if(cmds.window("InputPrompt",q=1,ex=1)):cmds.deleteUI("InputPrompt")
 		
 		cmds.window("InputPrompt",t='ifield',s=0,tb=0,mb=1,topLeftCorner=[ms.y()+NumericalInput.y_offset,ms.x()+NumericalInput.x_offset])
