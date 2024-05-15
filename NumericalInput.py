@@ -213,7 +213,8 @@ class NumericalInput():
 						cmds.rotate( direction.x, direction.y , direction.z , r=True,  p=pivot , ws=wspace, os=ospace , oa=orientation ,cs=compspace)										
 				else:
 					print("Unsupported coordinate space. only World, Local and Object space is supported for this tool.")
-				cmds.manipPivot( p=pivot)	
+				cmds.manipPivot( p=pivot, o=orientation)
+				cmds.manipRotateContext( "Rotate", e=True, currentActiveHandle=axisindex)		
 
 			if NumericalInput.contextname == "manipScale":
 				axisindex = cmds.manipScaleContext( "Scale", q=True, currentActiveHandle=True)					
