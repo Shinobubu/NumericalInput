@@ -202,6 +202,10 @@ class NumericalInput():
 					cmds.polyExtrudeEdge(kft=True,worldSpace=wspace )							
 				elif hasVertexes:							
 					cmds.polyExtrudeVertex(worldSpace=wspace,d=1,l=0,w=0.5)
+				
+				if hasFaces == hasEdges == hasVertexes == False:
+					cmds.duplicate(rr=True)
+
 				if wspace == True or ospace == True or rspace == True or lspace == True or compspace == True: 					
 					if euler.x == euler.y == euler.z == 0:	
 						# fixes a bug where no if the pivot isn't customized it would twist 
