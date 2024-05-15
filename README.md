@@ -3,11 +3,15 @@ A Maya script for manual numeric input of translation tools
 
 # How to Use
 With the Move/Scale/Rotate tool select the handle you want to manipulate and press the hotkey (Shift+Alt+Q) and type in the value you want to apply to it
+To Extrude selected component or clone an object along an axis press the (Shift+Alt+W) and type in the units you want to extrude the components to. Pressing (G) will repeat the last operation
 
 Features:
 - Supports Custom Pivots
 - Pivot Pinning
 - Multiple Axis input support ( Simultaneously change X Y and Z by typing in all 3 numbers seperated by space)
+- Extruding
+- Cloning Objects
+- Repeatable
 
 # Installation
 Copy the directory to your scripts folder make sure to remove  "-main" from the directory name
@@ -20,10 +24,11 @@ ie \Users\<username>\Documents\Maya\scripts\NumericalInput
 
 ![Step_1](https://github.com/Shinobubu/NumericalInput/assets/14949931/76a3fd64-d7b6-4224-90d7-ea09997b6586)
 
+> Importing the hotkey file will **override** your existing custom hotkey binds! Skip this step if you don't want to manually input your own hotkeys
+
 # Creating Hotkeys
-Importing the shortcut file will **override** your existing custom hotkey binds! 
-If you don't want this to happen you can create your own custom script keybind 
-- Create a new Runtime Command Editor
+
+- Create a new Runtime Command Editor (For Move Numerical)
 - Name: _MoveNumerical_
 - Category: _Custonm Scripts_
 - Sub-Category: _Transform_
@@ -38,6 +43,23 @@ NumericalInput.NumericalInput.openPrompt()
 ```
 ![Create_Hotkey](https://github.com/Shinobubu/NumericalInput/assets/14949931/9ad6f3c8-c37b-44c5-ad5f-15e55b70d8b0)
 ![Create_Hotkey_2](https://github.com/Shinobubu/NumericalInput/assets/14949931/cf5a59ae-a3ab-43bb-9e3b-e541bec539f1)
+
+- Create a new Runtime Command Editor (For Extrude/Clone Numerical)
+- Name: _ExtrudeNumerical_
+- Category: _Custonm Scripts_
+- Sub-Category: _Transform_
+- Language: _Python_
+
+Paste the following code
+```  
+from importlib import reload
+from NumericalInput import NumericalInput
+reload(NumericalInput)
+NumericalInput.NumericalInput.openExtrudePrompt()
+```
+**Set Hotkey to ( Shift+Alt+W )**
+![Create_Hotkey_3](https://github.com/Shinobubu/NumericalInput/assets/14949931/ba053bc5-1faf-49f5-84a3-dd0043ecc3c0)
+
 
 If you are not concerned with overwritting your existing hotkeys proceed to the steps below
 
