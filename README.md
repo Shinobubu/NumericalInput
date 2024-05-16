@@ -1,3 +1,6 @@
+
+![Numerical_Input](https://github.com/Shinobubu/NumericalInput/assets/14949931/e6d1f7e7-0565-4b39-9bfe-52f5c7c0cd7b)
+
 # (Autodesk Maya) Numerical Input
 A Maya script for manual numeric input of translation tools
 
