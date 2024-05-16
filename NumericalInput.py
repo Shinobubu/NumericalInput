@@ -77,34 +77,37 @@ class NumericalInput():
 		while not selListIter.isDone():              
 			
 			type = selListIter.itemType()
-			dag,comp= selListIter.getComponent()  
-			nodeType = cmds.nodeType(dag.extendToShape().fullPathName())    
-			print("nodetype ",nodeType)
-			print("Api Type ", comp.apiType() )
-			isMesh = False
-			isNurbs = False                
-			isCurves = False
-			if nodeType == "mesh":
-				isMesh = True
-				
-			if nodeType == "nurbsSurface":
-				isNurbs = True
-				
-			if nodeType == "nurbsCurve":
-				isCurves = True
+			try:
+				dag,comp= selListIter.getComponent()  
+				nodeType = cmds.nodeType(dag.extendToShape().fullPathName())    
+				#print("nodetype ",nodeType)
+				#print("Api Type ", comp.apiType() )
+				isMesh = False
+				isNurbs = False                
+				isCurves = False
+				if nodeType == "mesh":
+					isMesh = True
 					
-			if isMesh or comp.apiType() == oMaya.MFn.kMeshEdgeComponent or comp.apiType() == oMaya.MFn.kMeshVertComponent or comp.apiType() == oMaya.MFn.kMeshMapComponent or  comp.apiType() == oMaya.MFn.kMeshPolygonComponent:
-				mesh = oMaya.MFnMesh(dag)
-				if comp.apiType() == oMaya.MFn.kMeshEdgeComponent:
-					hasEdges = True				
-				if comp.apiType() == oMaya.MFn.kMeshVertComponent:
-					hasVertexes = True
-				if comp.apiType() == oMaya.MFn.kMeshMapComponent:
-					hasUVs = True
-				if comp.apiType() == oMaya.MFn.kMeshPolygonComponent:
-					hasFaces = True
+				if nodeType == "nurbsSurface":
+					isNurbs = True
+					
+				if nodeType == "nurbsCurve":
+					isCurves = True
+						
+				if isMesh or comp.apiType() == oMaya.MFn.kMeshEdgeComponent or comp.apiType() == oMaya.MFn.kMeshVertComponent or comp.apiType() == oMaya.MFn.kMeshMapComponent or  comp.apiType() == oMaya.MFn.kMeshPolygonComponent:
+					mesh = oMaya.MFnMesh(dag)
+					if comp.apiType() == oMaya.MFn.kMeshEdgeComponent:
+						hasEdges = True				
+					if comp.apiType() == oMaya.MFn.kMeshVertComponent:
+						hasVertexes = True
+					if comp.apiType() == oMaya.MFn.kMeshMapComponent:
+						hasUVs = True
+					if comp.apiType() == oMaya.MFn.kMeshPolygonComponent:
+						hasFaces = True
+			except:
+				pass
 			selListIter.next()
-
+			
 		return hasEdges, hasVertexes, hasFaces , hasUVs
 					
                 
