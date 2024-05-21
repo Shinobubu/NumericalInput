@@ -1,5 +1,6 @@
 
-![Numerical_Input](https://github.com/Shinobubu/NumericalInput/assets/14949931/6d697ca5-f20d-484a-823b-af3d17808105)
+[![Watch the Video](https://github.com/Shinobubu/NumericalInput/assets/14949931/4285f0fa-e50b-430d-88a0-56a2cdd22342)](https://youtu.be/WVV1-NUYzBM)
+
 
 # (Autodesk Maya) Numerical Input
 A Maya script for manual numeric input of translation tools
@@ -17,8 +18,8 @@ Features:
 - Repeatable
 
 # Installation
-Copy the directory to your scripts folder make sure to remove  "-main" from the directory name
-ie \Users\<username>\Documents\Maya\scripts\NumericalInput
+Copy the directory to your scripts folder make sure to **remove "-main" from the directory name
+ie \Users\<username>\Documents\Maya\scripts\NumericalInput**
 
 
 
@@ -77,5 +78,3 @@ If you are not concerned with overwritting your existing hotkeys proceed to the 
 
 ![Step_6](https://github.com/Shinobubu/NumericalInput/assets/14949931/034be218-8f68-4951-8f10-330a9c2a3a26)
 
-# Demonstration Video
-Coming Soon
